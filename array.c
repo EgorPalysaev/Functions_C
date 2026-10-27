@@ -54,7 +54,7 @@ static bool split_words(const char *input, char words[MAX_WORDS][MAX_WORD_LENGTH
         }
 
         memcpy(words[count], start, length);  //memcpy(destination, source, number_of_bytes) writes to the first argument pointer from second argument pointer by size_t third argumert len
-	digits_in_words[count] = count_digits(words[count], length);
+		digits_in_words[count] = count_digits(words[count], length);
         words[count][length] = '\0';
         count++;
     }
