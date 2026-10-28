@@ -6,6 +6,20 @@
 #define MAX_WORDS 128
 #define MAX_WORD_LENGTH 63
 
+void *my_memcpy(void *destination, const void *source, size_t length){
+    unsigned char *dest = destination;
+    const unsigned char *src = source;
+    for(size_t i = 0; i < length; i++){
+	dest[i] = src[i];
+    }
+    return destination;
+}
+
+int my_isspace(const char *pointer){
+    if (*pointer == 32 || *pointer == '\n' || *pointer == '\t' || *pointer == '\f' || *pointer == '\v' || *pointer == '\r') return *pointer;
+    return 0;
+}
+
 enum ERR { OK = 0, ERROR = 1 };
 
 // #define WIDHT (M + 1)            // #define WIDHT (M - 1) => "(M - 1)". Because macro does not have a subtraction
@@ -27,7 +41,7 @@ static bool split_words(const char *input, char words[MAX_WORDS][MAX_WORD_LENGTH
     int count = 0;
 
     while (*p != '\0') {
-        while (*p != '\0' && isspace(*p)) {      //isspace() checks if the symbol are " \t\n\r\f\v" and return nonzero if it is otherwise 0 
+        while (*p != '\0' && my_isspace((const char*)p)) {      //isspace() checks if the symbol are " \t\n\r\f\v" and return nonzero if it is otherwise 0 
             p++;
         }
 
@@ -36,7 +50,7 @@ static bool split_words(const char *input, char words[MAX_WORDS][MAX_WORD_LENGTH
         }
 
         const unsigned char *start = p;
-        while (*p != '\0' && !isspace(*p)) {
+        while (*p != '\0' && !my_isspace((const char*)p)) {
             p++;
         }
 
@@ -53,7 +67,7 @@ static bool split_words(const char *input, char words[MAX_WORDS][MAX_WORD_LENGTH
             return false;
         }
 
-        memcpy(words[count], start, length);  //memcpy(destination, source, number_of_bytes) writes to the first argument pointer from second argument pointer by size_t third argumert len
+        my_memcpy(words[count], start, length);  //memcpy(destination, source, number_of_bytes) writes to the first argument pointer from second argument pointer by size_t third argumert len
 		digits_in_words[count] = count_digits(words[count], length);
         words[count][length] = '\0';
         count++;
